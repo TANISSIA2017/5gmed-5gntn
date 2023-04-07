@@ -1,0 +1,1 @@
+docker run -it --cap-add=NET_ADMIN --network  host  --volume /home/ntn5g-up/test/configurations/upf-0.yaml:/upf/upfcfg.yaml --volume /home/ntn5g-up/test/containers/upf-0.sh:/upf/entrypoint.sh --volume /home/ntn5g-up/test/results:/upf/results --name upf-0 shynuu/sa-ntn:upf ./entrypoint.sh
