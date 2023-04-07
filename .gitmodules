@@ -1,0 +1,3 @@
+[submodule "test-cp/free5gc-populate2"]
+	path = test-cp/free5gc-populate2
+	url = https://github.com/shynuu/free5gc-populate.git
