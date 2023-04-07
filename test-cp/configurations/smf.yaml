@@ -1,0 +1,96 @@
+info:
+  version: 1.0.2
+  description: SMF initial local configuration
+
+configuration:
+  smfName: SMF # the name of this SMF
+  sbi: # Service-based interface information
+    scheme: http # the protocol for sbi (http or https)
+    registerIPv4: 172.16.40.36 # IP used to register to NRF
+    bindingIPv4: 172.16.40.36 # IP used to bind the service
+    port: 8005 # Port used to bind the service
+    tls: # the local path of TLS key
+      key: free5gc/support/TLS/smf.key # SMF TLS Certificate
+      pem: free5gc/support/TLS/smf.pem # SMF TLS Private key
+  serviceNameList: # the SBI services provided by this SMF, refer to TS 29.502
+    - nsmf-pdusession # Nsmf_PDUSession service
+    - nsmf-event-exposure # Nsmf_EventExposure service
+    - nsmf-oam # OAM service
+  snssaiInfos: # the S-NSSAI (Single Network Slice Selection Assistance Information) list supported by this AMF
+    - sNssai: # S-NSSAI (Single Network Slice Selection Assistance Information)
+        sst: 1 # Slice/Service Type (uinteger, range: 0~255)
+        sd: 010203 # Slice Differentiator (3 bytes hex string, range: 000000~FFFFFF)
+      dnnInfos: # DNN information list
+        - dnn: internet # Data Network Name
+          dns: # the IP address of DNS
+            ipv4: 10.10.10.254 #172.16.0.1 #8.8.8.8
+    - sNssai: # S-NSSAI (Single Network Slice Selection Assistance Information)
+        sst: 1 # Slice/Service Type (uinteger, range: 0~255)
+        sd: 112233 # Slice Differentiator (3 bytes hex string, range: 000000~FFFFFF)
+      dnnInfos: # DNN information list
+        - dnn: internet # Data Network Name
+          dns: # the IP address of DNS
+            ipv4: 172.16.0.1  #8.8.8.8
+            #ipv4: 10.10.10.254 #172.16.0.1  #8.8.8.8
+  plmnList: # the list of PLMN IDs that this SMF belongs to (optional, remove this key when unnecessary)
+    - mcc: "001" # Mobile Country Code (3 digits string, digit: 0~9)
+      mnc: "01" # Mobile Network Code (2 or 3 digits string, digit: 0~9)
+  pfcp: # the IP address of N4 interface on this SMF (PFCP)
+    addr: 172.16.40.36
+
+  userplaneInformation: # list of userplane information
+    upNodes: # information of userplane node (AN or UPF)
+      gnb:
+        type: AN
+        an_ip: 192.168.0.20
+      upf-0:
+        type: UPF
+        nodeID: 172.16.40.37
+        sNssaiUpfInfos:
+          - sNssai:
+              sst: 1
+              sd: 112233 #110101
+            dnnUpfInfoList:
+              - dnn: internet
+                pools:
+                  - cidr: 60.61.0.0/24
+        interfaces:
+          - interfaceType: N3
+            endpoints:
+              - 10.10.10.181
+            networkInstance: internet
+
+    links: # the topology graph of userplane, A and B represent the two nodes of each link
+      - A: gnb #gnb
+        B: upf-0 #UPF
+  nrfUri: http://172.16.40.36:8002 # a valid URI of NRF
+  qofUri: http://172.16.40.36:8090
+
+  locality: area1 # Name of the location where a set of AMF, SMF and UPFs are located
+
+# the kind of log output
+  # debugLevel: how detailed to output, value: trace, debug, info, warn, error, fatal, panic
+  # ReportCaller: enable the caller report or not, value: true or false
+logger:
+  SMF:
+    debugLevel: info
+    ReportCaller: false
+  NAS:
+    debugLevel: info
+    ReportCaller: false
+  NGAP:
+    debugLevel: info
+    ReportCaller: false
+  Aper:
+    debugLevel: info
+    ReportCaller: false
+  PathUtil:
+    debugLevel: info
+    ReportCaller: false
+  OpenApi:
+    debugLevel: info
+    ReportCaller: false
+  PFCP:
+    debugLevel: info
+    ReportCaller: false
+
